@@ -1,1 +1,19 @@
-spring.application.name=spring-boot-with-java
+spring:
+  application:
+    name: spring-boot-with-java
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_boot_with_java?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      show_sql: false
+    open-in-view: false
+logging:
+  level:
+    #root: WARN
+    br.com.thiagodotjpeg: DEBUG
