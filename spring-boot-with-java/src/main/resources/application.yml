@@ -5,15 +5,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_boot_with_java?useTimezone=true&serverTimezone=UTC
     username: root
-    password: admin123
+    password: root123
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
       show_sql: false
     open-in-view: false
 logging:
   level:
-    #root: WARN
-    br.com.thiagodotjpeg: DEBUG
+    root: INFO
+    #br.com.thiagodotjpeg: DEBUG
+spring-doc:
+  paths-to-match: /api/**/v1/**

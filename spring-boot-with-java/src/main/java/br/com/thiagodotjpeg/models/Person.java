@@ -1,13 +1,14 @@
 package br.com.thiagodotjpeg.models;
 
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "person")
-public class Person implements Serializable {
+public class Person extends RepresentationModel<Person> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

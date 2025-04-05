@@ -1,7 +1,9 @@
 package br.com.thiagodotjpeg.controllers;
 
-import br.com.thiagodotjpeg.data.dto.v2.PersonDTOV2;
+import br.com.thiagodotjpeg.controllers.docs.PersonControllerDocs;
+import br.com.thiagodotjpeg.data.dto.v1.PersonDTO;
 import br.com.thiagodotjpeg.services.PersonServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,38 +12,53 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping("api/v1/person")
-public class PersonController {
+@RequestMapping("/api/v1/person")
+@Tag(name = "People", description = "Endpoints for Managing People")
+public class PersonController implements PersonControllerDocs {
 
     @Autowired
     private PersonServices service;
 
-    @GetMapping(value = "/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public br.com.thiagodotjpeg.data.dto.v1.PersonDTO findById(@PathVariable Long id) {
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public PersonDTO findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<br.com.thiagodotjpeg.data.dto.v1.PersonDTO> findALl() {
-        return service.findALl();
-    }
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public List<PersonDTO> findAll() {
+        return service.findAll();
+    } 
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public br.com.thiagodotjpeg.data.dto.v1.PersonDTO create(@RequestBody br.com.thiagodotjpeg.data.dto.v1.PersonDTO person) {
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public PersonDTO create(@RequestBody PersonDTO person) {
         return service.create(person);
     }
 
-    @PostMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonDTOV2 create(@RequestBody PersonDTOV2 person) {
-        return service.createV2(person);
-    }
-
-    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public br.com.thiagodotjpeg.data.dto.v1.PersonDTO update(@RequestBody br.com.thiagodotjpeg.data.dto.v1.PersonDTO person) {
+    @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public PersonDTO update(@RequestBody PersonDTO person) {
         return service.update(person);
     }
 
-    @DeleteMapping(value = "/{id}" ,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{id}")
+    @Override
     public ResponseEntity<?> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
