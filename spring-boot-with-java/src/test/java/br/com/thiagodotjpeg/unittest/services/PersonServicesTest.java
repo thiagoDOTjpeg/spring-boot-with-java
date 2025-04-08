@@ -1,9 +1,10 @@
-package br.com.thiagodotjpeg.services;
+package br.com.thiagodotjpeg.unittest.services;
 
 import br.com.thiagodotjpeg.data.dto.v1.PersonDTO;
 import br.com.thiagodotjpeg.exceptions.RequiredObjectIsNullException;
 import br.com.thiagodotjpeg.models.Person;
 import br.com.thiagodotjpeg.repositories.PersonRepository;
+import br.com.thiagodotjpeg.services.PersonServices;
 import br.com.thiagodotjpeg.unittest.mapper.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

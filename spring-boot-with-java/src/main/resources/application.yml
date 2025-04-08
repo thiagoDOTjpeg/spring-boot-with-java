@@ -1,3 +1,5 @@
+cors:
+  originPatterns: http://localhost:8080,https://gritti.com.br,http://localhost:3000
 spring:
   application:
     name: spring-boot-with-java

@@ -1,9 +1,10 @@
-package br.com.thiagodotjpeg.services;
+package br.com.thiagodotjpeg.unittest.services;
 
 import br.com.thiagodotjpeg.data.dto.v1.BookDTO;
 import br.com.thiagodotjpeg.exceptions.RequiredObjectIsNullException;
 import br.com.thiagodotjpeg.models.Book;
 import br.com.thiagodotjpeg.repositories.BookRepository;
+import br.com.thiagodotjpeg.services.BookServices;
 import br.com.thiagodotjpeg.unittest.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
