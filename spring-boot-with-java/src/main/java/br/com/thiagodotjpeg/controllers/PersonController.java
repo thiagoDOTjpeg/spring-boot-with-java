@@ -19,47 +19,70 @@ public class PersonController implements PersonControllerDocs {
     @Autowired
     private PersonServices service;
 
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE})
-    @Override
-    public PersonDTO findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
-
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(produces = {
+            MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_YAML_VALUE})
     @Override
     public List<PersonDTO> findAll() {
         return service.findAll();
-    } 
+    }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/{id}",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public PersonDTO findById(@PathVariable("id") Long id) {
+        return service.findById(id);
+    }
+
+    @PostMapping(
+            consumes = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE},
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
     @Override
     public PersonDTO create(@RequestBody PersonDTO person) {
         return service.create(person);
     }
 
-    @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(
+            consumes = {
+                    MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
+                    MediaType.APPLICATION_YAML_VALUE},
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
     @Override
     public PersonDTO update(@RequestBody PersonDTO person) {
         return service.update(person);
     }
 
+    @PatchMapping(value = "/{id}",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public PersonDTO disablePerson(@PathVariable("id") Long id) {
+        return service.disablePerson(id);
+    }
+
     @DeleteMapping(value = "/{id}")
     @Override
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

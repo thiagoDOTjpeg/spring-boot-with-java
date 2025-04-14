@@ -1,4 +1,4 @@
-package br.com.thiagodotjpeg.integrationstest.controllers.withjson;
+package br.com.thiagodotjpeg.integrationstest.controllers.cors.withjson;
 
 import br.com.thiagodotjpeg.config.TestConfigs;
 import br.com.thiagodotjpeg.integrationstest.dto.PersonDTO;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = "server.port=8888")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PersonControllerTest extends AbstractIntegrationTest {
+class PersonControllerCorsTest extends AbstractIntegrationTest {
 
   private static RequestSpecification specification;
   private static ObjectMapper objectMapper;
@@ -76,6 +76,7 @@ class PersonControllerTest extends AbstractIntegrationTest {
     assertEquals("Stallman", createdPerson.getLastName());
     assertEquals("New York City - New York", createdPerson.getAddress());
     assertEquals("Male", createdPerson.getGender());
+    assertTrue(createdPerson.getEnabled());
   }
 
   @Test
@@ -142,6 +143,7 @@ class PersonControllerTest extends AbstractIntegrationTest {
     assertEquals("Stallman", createdPerson.getLastName());
     assertEquals("New York City - New York", createdPerson.getAddress());
     assertEquals("Male", createdPerson.getGender());
+    assertTrue(createdPerson.getEnabled());
   }
 
   @Test
@@ -174,5 +176,6 @@ class PersonControllerTest extends AbstractIntegrationTest {
     person.setLastName("Stallman");
     person.setAddress("New York City - New York");
     person.setGender("Male");
+    person.setEnabled(true);
   }
 }
