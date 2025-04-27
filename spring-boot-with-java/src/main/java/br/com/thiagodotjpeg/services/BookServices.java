@@ -7,6 +7,13 @@ import br.com.thiagodotjpeg.exceptions.ResourceNotFoundException;
 import br.com.thiagodotjpeg.models.Book;
 import br.com.thiagodotjpeg.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import static br.com.thiagodotjpeg.mapper.ObjectMapper.parselistobjects;
@@ -21,10 +28,20 @@ public class BookServices {
   @Autowired
   private BookRepository bookRepository;
 
-  public List<BookDTO> findAll() {
-    List<BookDTO> bookDTOs = parselistobjects(bookRepository.findAll(), BookDTO.class);
-    bookDTOs.forEach(BookServices::addHateoasLinks);
-    return bookDTOs;
+  @Autowired
+  PagedResourcesAssembler<BookDTO> assembler;
+
+  public PagedModel<EntityModel<BookDTO>> findAll(Pageable pageable) {
+    Page<Book> books = bookRepository.findAll(pageable);
+    Page<BookDTO> booksWithLinks = books.map(b -> {
+      var dto = parseObject(b, BookDTO.class);
+      addHateoasLinks(dto);
+      return dto;
+    });
+
+    Link findAllLinks = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BookController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), String.valueOf(pageable.getSort()))).withSelfRel();
+
+    return assembler.toModel(booksWithLinks, findAllLinks);
   }
 
   public BookDTO findById(Long id) {
@@ -64,7 +81,7 @@ public class BookServices {
 
   private static void addHateoasLinks(BookDTO dto) {
     dto.add(linkTo(methodOn(BookController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-    dto.add(linkTo(methodOn(BookController.class).findAll()).withRel("findAll").withType("GET"));
+    dto.add(linkTo(methodOn(BookController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
     dto.add(linkTo(methodOn(BookController.class).create(dto)).withRel("create").withType("POST"));
     dto.add(linkTo(methodOn(BookController.class).update(dto)).withRel("update").withType("PATCH"));
     dto.add(linkTo(methodOn(BookController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));

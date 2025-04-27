@@ -1,19 +1,34 @@
 package br.com.thiagodotjpeg.integrationstest.dto;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+@XmlRootElement
 public class PersonDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @JacksonXmlProperty(localName = "id")
     private Long id;
+
+    @JacksonXmlProperty(localName = "firstName")
     private String firstName;
+
+    @JacksonXmlProperty(localName = "lastName")
     private String lastName;
+
+    @JacksonXmlProperty(localName = "address")
     private String address;
+
+    @JacksonXmlProperty(localName = "gender")
     private String gender;
+
+    @JacksonXmlProperty(localName = "enabled")
     private Boolean enabled;
 
     public PersonDTO() {
