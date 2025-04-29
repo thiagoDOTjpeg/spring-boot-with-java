@@ -29,7 +29,7 @@ public class BookServices {
   private BookRepository bookRepository;
 
   @Autowired
-  PagedResourcesAssembler<BookDTO> assembler;
+  private PagedResourcesAssembler<BookDTO> assembler;
 
   public PagedModel<EntityModel<BookDTO>> findAll(Pageable pageable) {
     Page<Book> books = bookRepository.findAll(pageable);

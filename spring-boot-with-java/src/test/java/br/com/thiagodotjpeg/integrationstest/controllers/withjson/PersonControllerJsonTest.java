@@ -2,8 +2,8 @@ package br.com.thiagodotjpeg.integrationstest.controllers.withjson;
 
 import br.com.thiagodotjpeg.config.TestConfigs;
 import br.com.thiagodotjpeg.integrationstest.dto.PersonDTO;
+import br.com.thiagodotjpeg.integrationstest.dto.wrapper.json.WrapperPersonDTO;
 import br.com.thiagodotjpeg.integrationstest.testcontainers.AbstractIntegrationTest;
-import br.com.thiagodotjpeg.models.Person;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -185,6 +184,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
   void findAll() throws IOException {
     var content = given(specification)
             .accept(MediaType.APPLICATION_JSON_VALUE)
+            .queryParams("page", 3, "size", 12, "direction", "asc")
             .when()
             .get()
             .then()
@@ -194,7 +194,8 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
-    List<PersonDTO> people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>() {});
+    WrapperPersonDTO wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+    List<PersonDTO> people = wrapper.getEmbedded().getPeople();
 
     PersonDTO personOne = people.get(0);
     person = personOne;
@@ -202,10 +203,66 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     assertNotNull(personOne.getId());
     assertTrue(personOne.getId() > 0);
 
-    assertEquals("Thiago", personOne.getFirstName());
-    assertEquals("Gritti", personOne.getLastName());
-    assertEquals("Balneário Camboriú - Santa Catarina - Brasil", personOne.getAddress());
-    assertEquals("Male", personOne.getGender());
+    assertEquals("Anna", personOne.getFirstName());
+    assertEquals("Lorenzetti", personOne.getLastName());
+    assertEquals("Suite 59", personOne.getAddress());
+    assertEquals("Female", personOne.getGender());
+    assertFalse(personOne.getEnabled());
+
+    PersonDTO personTwo = people.get(1);
+    person = personTwo;
+
+    assertNotNull(personTwo.getId());
+    assertTrue(personTwo.getId() > 0);
+
+    assertEquals("Annemarie", personTwo.getFirstName());
+    assertEquals("Seeds", personTwo.getLastName());
+    assertEquals("Suite 95", personTwo.getAddress());
+    assertEquals("Female", personTwo.getGender());
+    assertFalse(personTwo.getEnabled());
+
+    PersonDTO personThree = people.get(2);
+    person = personThree;
+
+    assertNotNull(personThree.getId());
+    assertTrue(personThree.getId() > 0);
+
+    assertEquals("Anthia", personThree.getFirstName());
+    assertEquals("Piggin", personThree.getLastName());
+    assertEquals("8th Floor", personThree.getAddress());
+    assertEquals("Female", personThree.getGender());
+    assertFalse(personThree.getEnabled());
+  }
+
+  @Test
+  @Order(6)
+  void findByNameTest() throws IOException {
+    var content = given(specification)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .pathParam("firstName", "an")
+            .queryParams("page", 3, "size", 12, "direction", "asc")
+            .when()
+            .get("findPeopleByName/{firstName}")
+            .then()
+            .statusCode(200)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .extract()
+            .body()
+            .asString();
+
+    WrapperPersonDTO wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+    List<PersonDTO> people = wrapper.getEmbedded().getPeople();
+
+    PersonDTO personOne = people.get(0);
+    person = personOne;
+
+    assertNotNull(personOne.getId());
+    assertTrue(personOne.getId() > 0);
+
+    assertEquals("Daniele", personOne.getFirstName());
+    assertEquals("Hardwin", personOne.getLastName());
+    assertEquals("Room 1574", personOne.getAddress());
+    assertEquals("Female", personOne.getGender());
     assertTrue(personOne.getEnabled());
 
     PersonDTO personTwo = people.get(1);
@@ -214,11 +271,11 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     assertNotNull(personTwo.getId());
     assertTrue(personTwo.getId() > 0);
 
-    assertEquals("Ayrton", personTwo.getFirstName());
-    assertEquals("Senna", personTwo.getLastName());
-    assertEquals("Curitiba", personTwo.getAddress());
+    assertEquals("Dannie", personTwo.getFirstName());
+    assertEquals("Sheere", personTwo.getLastName());
+    assertEquals("Room 138", personTwo.getAddress());
     assertEquals("Male", personTwo.getGender());
-    assertTrue(personTwo.getEnabled());
+    assertFalse(personTwo.getEnabled());
 
     PersonDTO personThree = people.get(2);
     person = personThree;
@@ -226,13 +283,11 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     assertNotNull(personThree.getId());
     assertTrue(personThree.getId() > 0);
 
-    assertEquals("Vendra", personThree.getFirstName());
-    assertEquals("Brigada", personThree.getLastName());
-    assertEquals("São Paulo", personThree.getAddress());
+    assertEquals("Deeanne", personThree.getFirstName());
+    assertEquals("MacCart", personThree.getLastName());
+    assertEquals("Apt 157", personThree.getAddress());
     assertEquals("Female", personThree.getGender());
     assertTrue(personThree.getEnabled());
-
-
   }
 
   private void mockPerson() {
