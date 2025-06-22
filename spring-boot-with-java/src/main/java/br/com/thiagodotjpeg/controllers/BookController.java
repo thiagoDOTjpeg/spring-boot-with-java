@@ -2,7 +2,7 @@ package br.com.thiagodotjpeg.controllers;
 
 import br.com.thiagodotjpeg.controllers.docs.BookControllerDocs;
 import br.com.thiagodotjpeg.data.dto.v1.BookDTO;
-import br.com.thiagodotjpeg.services.BookServices;
+import br.com.thiagodotjpeg.services.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,16 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController()
 @RequestMapping("/api/v1/book")
 @Tag(name = "Book", description = "Endpoints for Managing Book")
 public class BookController implements BookControllerDocs {
   @Autowired
-  private BookServices services;
+  private BookService services;
 
-  public BookController(BookServices services) {
+  public BookController(BookService services) {
     this.services = services;
   }
 

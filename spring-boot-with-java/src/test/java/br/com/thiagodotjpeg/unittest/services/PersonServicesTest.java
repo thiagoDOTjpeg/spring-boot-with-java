@@ -4,10 +4,9 @@ import br.com.thiagodotjpeg.data.dto.v1.PersonDTO;
 import br.com.thiagodotjpeg.exceptions.RequiredObjectIsNullException;
 import br.com.thiagodotjpeg.models.Person;
 import br.com.thiagodotjpeg.repositories.PersonRepository;
-import br.com.thiagodotjpeg.services.PersonServices;
+import br.com.thiagodotjpeg.services.PersonService;
 import br.com.thiagodotjpeg.unittest.mapper.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ class PersonServicesTest {
   MockPerson input;
 
   @InjectMocks
-  private PersonServices service;
+  private PersonService service;
 
   @Mock
   PersonRepository repository;
@@ -219,7 +218,6 @@ class PersonServicesTest {
   }
 
   @Test
-  @Disabled("REASON: Still under development")
   void findAll() {
     List<Person> list = input.mockEntityList();
     when(repository.findAll()).thenReturn(list);

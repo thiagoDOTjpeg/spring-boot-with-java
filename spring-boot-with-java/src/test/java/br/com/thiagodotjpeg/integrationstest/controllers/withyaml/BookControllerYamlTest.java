@@ -172,10 +172,10 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
     assertNotNull(bookOne.getId());
     assertTrue(bookOne.getId() > 0);
 
-    assertEquals("Courtney Hayes", bookOne.getAuthor());
-    assertEquals("Desert Mirage", bookOne.getTitle());
+    assertEquals("Eric Freeman, Elisabeth Freeman, Kathy Sierra, Bert Bates", bookOne.getAuthor());
+    assertEquals("Head First Design Patterns", bookOne.getTitle());
     assertInstanceOf(Date.class, bookOne.getLaunchDate());
-    assertEquals(90.77, bookOne.getPrice());
+    assertEquals(110.0, bookOne.getPrice());
 
     BookDTO bookTwo = books.get(1);
     book = bookTwo;
@@ -183,10 +183,10 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
     assertNotNull(bookTwo.getId());
     assertTrue(bookTwo.getId() > 0);
 
-    assertEquals("Emily Johnson", bookTwo.getAuthor());
-    assertEquals("Desert Mirage", bookTwo.getTitle());
+    assertEquals("Aguinaldo Aragon Fernandes e Vladimir Ferraz de Abreu", bookTwo.getAuthor());
+    assertEquals("Implantando a governança de TI", bookTwo.getTitle());
     assertInstanceOf(Date.class, bookTwo.getLaunchDate());
-    assertEquals(14.8, bookTwo.getPrice());
+    assertEquals(54.0, bookTwo.getPrice());
 
     BookDTO bookThree = books.get(2);
     book = bookThree;
@@ -194,10 +194,10 @@ class BookControllerYamlTest extends AbstractIntegrationTest {
     assertNotNull(bookThree.getId());
     assertTrue(bookThree.getId() > 0);
 
-    assertEquals("Ralph Johnson, Erich Gamma, John Vlissides e Richard Helm", bookThree.getAuthor());
-    assertEquals("Design Patterns", bookThree.getTitle());
+    assertEquals("Brian Goetz e Tim Peierls", bookThree.getAuthor());
+    assertEquals("Java Concurrency in Practice", bookThree.getTitle());
     assertInstanceOf(Date.class, bookThree.getLaunchDate());
-    assertEquals(45.0, bookThree.getPrice());
+    assertEquals(80.0, bookThree.getPrice());
   }
 
   private void mockPerson() {

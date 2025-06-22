@@ -4,10 +4,9 @@ import br.com.thiagodotjpeg.data.dto.v1.BookDTO;
 import br.com.thiagodotjpeg.exceptions.RequiredObjectIsNullException;
 import br.com.thiagodotjpeg.models.Book;
 import br.com.thiagodotjpeg.repositories.BookRepository;
-import br.com.thiagodotjpeg.services.BookServices;
+import br.com.thiagodotjpeg.services.BookService;
 import br.com.thiagodotjpeg.unittest.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,7 @@ public class BookServicesTest {
   MockBook input;
 
   @InjectMocks
-  private BookServices service;
+  private BookService service;
 
   @Mock
   BookRepository repository;
@@ -246,7 +245,6 @@ public class BookServicesTest {
   }
 
   @Test
-  @Disabled("REASON: still under development")
   void findAll() {
     List<Book> list = input.mockEntityList();
     when(repository.findAll()).thenReturn(list);

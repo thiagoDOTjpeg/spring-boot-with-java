@@ -1,10 +1,12 @@
 package br.com.thiagodotjpeg.integrationstest.dto;
 
+import br.com.thiagodotjpeg.models.Book;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement
@@ -29,6 +31,15 @@ public class PersonDTO implements Serializable {
 
     @JacksonXmlProperty(localName = "enabled")
     private Boolean enabled;
+
+    @JacksonXmlProperty(localName = "profileUrl")
+    private String profileUrl;
+
+    @JacksonXmlProperty(localName = "photoUrl")
+    private String photoUrl;
+
+    @JacksonXmlProperty(localName = "books")
+    private List<Book> books;
 
     public PersonDTO() {
     }

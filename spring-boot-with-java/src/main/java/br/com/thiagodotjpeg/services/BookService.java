@@ -16,15 +16,12 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
-import static br.com.thiagodotjpeg.mapper.ObjectMapper.parselistobjects;
 import static br.com.thiagodotjpeg.mapper.ObjectMapper.parseObject;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
-
 @Service
-public class BookServices {
+public class BookService {
   @Autowired
   private BookRepository bookRepository;
 
