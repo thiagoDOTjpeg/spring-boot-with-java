@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = "server.port=8888")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AuthControllerTest extends AbstractIntegrationTest {
+class AuthControllerJsonTest extends AbstractIntegrationTest {
 
   private static TokenDTO token;
 
@@ -50,5 +50,21 @@ class AuthControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(2)
   void refreshToken() {
+    token = given()
+            .basePath("/auth/refresh")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .pathParam("username", token.getUsername())
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getAccessToken())
+            .when()
+            .put("{username}")
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .as(TokenDTO.class);
+
+    assertNotNull(token.getAccessToken());
+    assertNotNull(token.getRefreshToken());
   }
 }

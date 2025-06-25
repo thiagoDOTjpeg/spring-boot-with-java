@@ -1,7 +1,9 @@
 package br.com.thiagodotjpeg.integrationstest.controllers.withxml;
 
 import br.com.thiagodotjpeg.config.TestConfigs;
+import br.com.thiagodotjpeg.integrationstest.dto.AccountCredentialsDTO;
 import br.com.thiagodotjpeg.integrationstest.dto.PersonDTO;
+import br.com.thiagodotjpeg.integrationstest.dto.TokenDTO;
 import br.com.thiagodotjpeg.integrationstest.dto.wrapper.json.WrapperPersonDTO;
 import br.com.thiagodotjpeg.integrationstest.dto.wrapper.xml.PagedModelPerson;
 import br.com.thiagodotjpeg.integrationstest.testcontainers.AbstractIntegrationTest;
@@ -32,6 +34,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
   private static RequestSpecification specification;
   private static XmlMapper xmlMapper;
   private static PersonDTO person;
+  private static TokenDTO token;
 
   @BeforeAll
   static void setUp() {
@@ -39,6 +42,29 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     xmlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
     person = new PersonDTO();
+    token = new TokenDTO();
+  }
+
+  @Test
+  @Order(0)
+  void signIn() {
+    AccountCredentialsDTO credentials = new AccountCredentialsDTO("leandro", "admin123");
+
+    token = given()
+            .basePath("/auth/signin")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(credentials)
+            .when()
+            .post()
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .as(TokenDTO.class);
+
+    assertNotNull(token.getAccessToken());
+    assertNotNull(token.getRefreshToken());
   }
 
   @Test
@@ -49,6 +75,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     specification = new RequestSpecBuilder()
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_GRITTI)
             .addHeader(TestConfigs.HEADER_ACCEPT, MediaType.APPLICATION_XML_VALUE)
+            .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getAccessToken())
             .setBasePath("/api/v1/person")
             .setPort(TestConfigs.SERVER_PORT)
               .addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -84,7 +111,6 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
   @Order(2)
   void updateTest() throws IOException {
     person.setLastName("Benedict Torvalds");
-
 
     var content = given(specification)
             .contentType(MediaType.APPLICATION_XML_VALUE)

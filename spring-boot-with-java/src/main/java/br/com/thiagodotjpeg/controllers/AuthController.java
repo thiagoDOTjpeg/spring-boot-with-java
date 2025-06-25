@@ -18,14 +18,14 @@ public class AuthController implements AuthControllerDocs {
   @Autowired
   AuthService service;
 
-  @PostMapping("/signIn")
+  @PostMapping("/signin")
   @Override
   public ResponseEntity<?> signIn(@RequestBody AccountCredentialsDTO credentials){
     if(credentialsIsInvalid(credentials)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
 
     var token = service.signIn(credentials);
     if(token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
-    return ResponseEntity.ok().body(token);
+    return token;
   }
 
   @PutMapping("/refresh/{username}")

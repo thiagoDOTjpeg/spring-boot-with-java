@@ -1,7 +1,9 @@
 package br.com.thiagodotjpeg.integrationstest.controllers.withjson;
 
 import br.com.thiagodotjpeg.config.TestConfigs;
+import br.com.thiagodotjpeg.integrationstest.dto.AccountCredentialsDTO;
 import br.com.thiagodotjpeg.integrationstest.dto.PersonDTO;
+import br.com.thiagodotjpeg.integrationstest.dto.TokenDTO;
 import br.com.thiagodotjpeg.integrationstest.dto.wrapper.json.WrapperPersonDTO;
 import br.com.thiagodotjpeg.integrationstest.testcontainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
@@ -30,6 +32,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
   private static RequestSpecification specification;
   private static ObjectMapper objectMapper;
   private static PersonDTO person;
+  private static TokenDTO token;
 
   @BeforeAll
   static void setUp() {
@@ -37,6 +40,29 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
     objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
     person = new PersonDTO();
+    token = new TokenDTO();
+  }
+
+  @Test
+  @Order(0)
+  void signIn() {
+    AccountCredentialsDTO credentials = new AccountCredentialsDTO("leandro", "admin123");
+
+    token = given()
+            .basePath("/auth/signin")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(credentials)
+            .when()
+            .post()
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .as(TokenDTO.class);
+
+    assertNotNull(token.getAccessToken());
+    assertNotNull(token.getRefreshToken());
   }
 
   @Test
@@ -46,6 +72,7 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 
     specification = new RequestSpecBuilder()
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_GRITTI)
+            .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + token.getAccessToken())
             .setBasePath("/api/v1/person")
             .setPort(TestConfigs.SERVER_PORT)
               .addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -109,14 +136,6 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
   @Test
   @Order(3)
   void findById() throws IOException {
-    specification = new RequestSpecBuilder()
-            .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_GRITTI)
-            .setBasePath("/api/v1/person")
-            .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-            .build();
-
     var content = given(specification)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .pathParam("id", person.getId())
