@@ -1,0 +1,37 @@
+version: '3.4'
+services:
+  db:
+    image: mysql:9.1.0
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: admin123
+      MYSQL_DATABASE: spring_boot_with_java
+    ports:
+      - "3308:3306"
+    expose:
+      - 3306
+    networks:
+      - gritti-network
+  spring_boot_with_java:
+    image: thiago2jpeg/spring_boot_with_java
+    restart: always
+    build: ./spring-boot-with-java
+    working_dir: /spring-boot-with-java
+    command: mvn spring-boot:run
+    ports:
+      - "80:80"
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.DATASOURCE.URL: jdbc:mysql://db:3306/spring_boot_with_java?useTimezone=true&serverTimezone=UTC
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: admin123
+    depends_on:
+      - db
+    networks:
+      - gritti-network
+networks:
+  gritti-network:
+    driver: bridge
