@@ -1,7 +1,8 @@
 # Spring Boot com Java
 Este repositório contém uma API RESTful completa desenvolvida com Spring Boot e Java. O projeto demonstra as melhores práticas de desenvolvimento, incluindo arquitetura em camadas, segurança com JWT, versionamento de API, migrações de banco de dados com Flyway, e muito mais.
 
-[![Continuos Integration and Delivery with Github Actions](https://github.com/thiagoDOTjpeg/spring-boot-with-java/actions/workflows/continous-deployment.yml/badge.svg)](https://github.com/thiagoDOTjpeg/spring-boot-with-java/actions/workflows/continous-deployment.yml)
+[![Continuos Integration and Delivery with Github Actions](https://github.com/thiagoDOTjpeg/spring-boot-with-java/actions/workflows/continous-deployment.yml/badge.svg)](https://github.com/thiagoDOTjpeg/spring-boot-with-java/actions/workflows/continous-deployment.yml)<br>
+[![Docker Hub Repo](https://img.shields.io/docker/pulls/thiago2jpeg/spring_boot_with_java.svg)](https://hub.docker.com/repository/docker/thiago2jpeg/spring_boot_with_java)
 
 
 # ✨ Funcionalidades
