@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
 cors:
   originPatterns: http://localhost:8080,https://gritti.com.br,http://localhost:3000
 file:
