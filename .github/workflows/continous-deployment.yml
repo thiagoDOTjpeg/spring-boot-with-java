@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy to Google Cloud Run
         run: | 
-          google run deploy spring-boot-with-java \ 
+          gcloud run deploy spring-boot-with-java \ 
           --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest \
           --region us-central1 \
           --platform managed \
