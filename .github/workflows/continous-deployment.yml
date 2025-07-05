@@ -89,13 +89,7 @@ jobs:
 
       - name: Deploy to Google Cloud Run
         run: |
-          gcloud run deploy spring-boot-with-java \ 
-          --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }} \
-          --region us-central1 \
-          --platform managed \
-          --allow-unauthenticated \
-          --project ${{ secrets.PROJECT_ID }}
-          
+          gcloud run deploy spring-boot-with-java --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }} --region us-central1 --platform managed --allow-unauthenticated --project ${{ secrets.PROJECT_ID }}
 
       - name: Push to Docker Hub Container Registry
         run: |
