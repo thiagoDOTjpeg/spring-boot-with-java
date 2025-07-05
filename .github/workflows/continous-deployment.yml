@@ -81,11 +81,11 @@ jobs:
 
       - name: Push to Google Cloud Artifact Registry
         run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGISTRY_INFO }}/spring_boot_with_java:latest
-          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGISTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
           
-          docker push ${{ secrets.REGISTRY_INFO }}/spring_boot_with_java:latest
-          docker push ${{ secrets.REGISTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
 
       - name: Push to Docker Hub Container Registry
         run: |
