@@ -25,6 +25,7 @@ jobs:
       - name: Configure Docker Authentication for Google Cloud Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
+### AWS
 #      - name: Configure AWS credentials
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:
@@ -51,6 +52,7 @@ jobs:
         working-directory: ./spring-boot-with-java
         run: docker compose build
 
+### AWS
 #      - name: Tag and Push Docker Image to Amazon Container Registry - ECR
 #        run: |
 #          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.IMAGE_REPO_URL }}:latest
@@ -79,17 +81,19 @@ jobs:
 #          cluster: ${{ secrets.CLUSTER_NAME }}
 #          wait-for-service-stability: true
 
-      - name: Push to Google Cloud Artifact Registry
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
-          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
-          
-          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
-          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
 
-      - name: Deploy to Google Cloud Run
-        run: |
-          gcloud run deploy spring-boot-with-java --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }} --region us-central1 --platform managed --allow-unauthenticated --project ${{ secrets.PROJECT_ID }}
+### GKE
+#      - name: Push to Google Cloud Artifact Registry
+#        run: |
+#          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+#          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+#
+#          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+#          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+#
+#      - name: Deploy to Google Cloud Run
+#        run: |
+#          gcloud run deploy spring-boot-with-java --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }} --region us-central1 --platform managed --allow-unauthenticated --project ${{ secrets.PROJECT_ID }}
 
       - name: Push to Docker Hub Container Registry
         run: |
