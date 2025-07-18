@@ -83,14 +83,14 @@ jobs:
 
 
 ### GKE
-#      - name: Push to Google Cloud Artifact Registry
-#        run: |
-#          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
-#          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
-#
-#          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
-#          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
-#
+      - name: Push to Google Cloud Artifact Registry
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/spring_boot_with_java:latest ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+
+          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:latest
+          docker push ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }}
+
 #      - name: Deploy to Google Cloud Run
 #        run: |
 #          gcloud run deploy spring-boot-with-java --image ${{ secrets.REGESTRY_INFO }}/spring_boot_with_java:${{ github.run_id }} --region us-central1 --platform managed --allow-unauthenticated --project ${{ secrets.PROJECT_ID }}
